@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Detalhes do Usuário</title>
+    <link rel="stylesheet" type="text/css" href="/point_project/css/style.css">
 
     <!-- Inclua a biblioteca jQuery -->
     <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
@@ -11,11 +12,8 @@
     <link rel="stylesheet" href="/webjars/bootstrap/4.6.0/dist/css/bootstrap.min.css">
      --> 
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css">
-    
-    
-    
-    <!-- Incluir Bootstrap JavaScript (opcional) -->
-    <script src="/webjars/bootstrap/5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+      
+
 </head>
 <body>
 
@@ -55,29 +53,117 @@
     </div>
 </nav>
 
-<h1>Detalhes do Usuário</h1>
-
+<div class="tabela-horario">
+ 
 <form id="userForm">
-    <label for="nome">Entrada:</label>
-    <input type="text" id="nome" name="nome" required>
+    <label for="exampleFormControlInput1" style="margin-top:5px" class="form-label">Horário de Trabalho:</label>
+   <div class="row">
+  <div class="col">
+ 
+    <input type="text" class="form-control" placeholder="Entrada" aria-label="First name">
+  </div>
+  <div class="col">
+    <input type="text" class="form-control" placeholder="Saída" aria-label="Last name">
+  </div>
 
-    <label for="email">Saida:</label>
-    <input type="email" id="email" name="email" required>
 
-    <button type="button" onclick="enviarFormulario()">Enviar</button>
+  
+    <button type="button" class="btn btn-primary" onclick="enviarFormulario()">Cadastrar</button>
 </form>
 
+<table class="table">
+  <thead>
+    <tr>
+      <th scope="col">#</th>
+      <th scope="col">Entrada</th>
+      <th scope="col">Saída</th>
+     
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th scope="row">1</th>
+      <td>Mark</td>
+      <td>Otto</td>
+     
+    </tr>
+    <tr>
+      <th scope="row">2</th>
+      <td>Jacob</td>
+      <td>Thornton</td>
+    
+    </tr>
+    <tr>
+      <th scope="row">3</th>
+      <td colspan="2">Larry the Bird</td>
+     
+    </tr>
+  </tbody>
+</table>
+</div>
 <div id="detalhes-usuario"></div>
+</div>
+
+<div class="tabela-marcacao">
+ 
+<form id="userForm">
+    <label for="exampleFormControlInput1" style="margin-top:5px" class="form-label">Marcações Feitas:</label>
+   <div class="row">
+  <div class="col">
+ 
+    <input type="text" class="form-control" placeholder="Entrada" aria-label="First name">
+  </div>
+  <div class="col">
+    <input type="text" class="form-control" placeholder="Saída" aria-label="Last name">
+  </div>
+
+
+  
+    <button type="button" class="btn btn-primary" onclick="enviarFormulario()">Cadastrar</button>
+</form>
+
+<table class="table">
+  <thead>
+    <tr>
+      <th scope="col">#</th>
+      <th scope="col">Entrada</th>
+      <th scope="col">Saída</th>
+     
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th scope="row">1</th>
+      <td>Mark</td>
+      <td>Otto</td>
+     
+    </tr>
+    <tr>
+      <th scope="row">2</th>
+      <td>Jacob</td>
+      <td>Thornton</td>
+    
+    </tr>
+    <tr>
+      <th scope="row">3</th>
+      <td colspan="2">Larry the Bird</td>
+     
+    </tr>
+  </tbody>
+</table>
+</div>
+<div id="detalhes-usuario"></div>
+</div>
 
 <script>
     function enviarFormulario() {
-        let nome = $('#nome').val();
-        let email = $('#email').val();
+        let entrada = $('#entrada').val();
+        let saida = $('#saida').val();
 
         // Cria um objeto com os dados do formulário
         const formData = {
-            nome: nome,
-            email: email
+            entrada: entrada,
+            saida: saida
         };
 
         // Faz a requisição Ajax usando jQuery

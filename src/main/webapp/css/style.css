@@ -1,0 +1,29 @@
+
+
+
+
+.tabela-horario {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: auto;
+    margin-top: 50px;
+    box-shadow: 1px 1px 1px rgba(0, 0, 0, 0.1);
+}
+
+.tabela-marcacao{
+	
+	display: flex;
+    justify-content: center;
+    align-items: center;
+    width: auto;
+    margin-top: 50px;
+    box-shadow: 1px 1px 1px rgba(0, 0, 0, 0.1);
+    
+}
+.table{
+	margin-top: 40px;
+	
+   
+   
+}
