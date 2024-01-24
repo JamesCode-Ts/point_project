@@ -18,14 +18,14 @@ public class UsuarioServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         // Obter parâmetros do formulário
-        String nome = request.getParameter("nome");
-        String email = request.getParameter("email");
+        String entrada = request.getParameter("nome");
+        String saida = request.getParameter("email");
 
         // Realizar alguma lógica com os dados (por exemplo, salvar em um banco de dados)
-         System.out.println(nome);
+         System.out.println(entrada);
 
         // Construir a resposta para a requisição Ajax
-        String resposta = "Dados do usuário recebidos:\nNome: " + nome + "\nEmail: " + email;
+        String resposta = "Entradas e Saídas recebidas:\n Entrada: " + entrada + "\nEmail: " + saida;
 
         // Enviar a resposta de volta para a página HTML
         response.setContentType("text/plain");
