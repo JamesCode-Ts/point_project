@@ -55,20 +55,20 @@
 
 <div class="tabela-horario">
  
-<form id="userForm">
+<form id="userForm1">
     <label for="exampleFormControlInput1" style="margin-top:5px" class="form-label">Horário de Trabalho:</label>
    <div class="row">
   <div class="col">
  
-    <input type="text" class="form-control" placeholder="Entrada" aria-label="First name">
+    <input type="text" class="form-control"  id="entrada" placeholder="Entrada" aria-label="First name">
   </div>
   <div class="col">
-    <input type="text" class="form-control" placeholder="Saída" aria-label="Last name">
+    <input type="text" class="form-control" id="saida" placeholder="Saída" aria-label="Last name">
   </div>
 
 
   
-    <button type="button" class="btn btn-primary" onclick="enviarFormulario()">Cadastrar</button>
+     <button type="button" id="cadastrarHorario" class="btn btn-primary">Cadastrar</button>
 </form>
 
 <table class="table">
@@ -77,109 +77,300 @@
       <th scope="col">#</th>
       <th scope="col">Entrada</th>
       <th scope="col">Saída</th>
-     
     </tr>
   </thead>
-  <tbody>
-    <tr>
-      <th scope="row">1</th>
-      <td>Mark</td>
-      <td>Otto</td>
-     
-    </tr>
-    <tr>
-      <th scope="row">2</th>
-      <td>Jacob</td>
-      <td>Thornton</td>
-    
-    </tr>
-    <tr>
-      <th scope="row">3</th>
-      <td colspan="2">Larry the Bird</td>
-     
-    </tr>
+  <tbody id="tabelaRegistrosT1">
+    <!-- Os registros serão adicionados aqui dinamicamente -->
   </tbody>
 </table>
 </div>
-<div id="detalhes-usuario"></div>
+</div>
+
+<table class="table">
+  <thead>
+    <tr>
+      <th scope="col">#</th>
+      <th scope="col">Entrada</th>
+      <th scope="col">Saída</th>
+    </tr>
+  </thead>
+  <tbody id="tabelaAtraso">
+    <!-- Os registros serão adicionados aqui dinamicamente -->
+  </tbody>
+</table>
+</div>
+</div>
+
 </div>
 
 <div class="tabela-marcacao">
  
-<form id="userForm">
+<form id="userForm2">
     <label for="exampleFormControlInput1" style="margin-top:5px" class="form-label">Marcações Feitas:</label>
    <div class="row">
   <div class="col">
  
-    <input type="text" class="form-control" placeholder="Entrada" aria-label="First name">
+    <input type="text" class="form-control"  id="entradaT2" placeholder="Entrada" aria-label="First name">
   </div>
   <div class="col">
-    <input type="text" class="form-control" placeholder="Saída" aria-label="Last name">
+    <input type="text" class="form-control"  id="saidaT2"placeholder="Saída" aria-label="Last name">
   </div>
 
 
   
-    <button type="button" class="btn btn-primary" onclick="enviarFormulario()">Cadastrar</button>
-</form>
+  <button type="button" id="cadastrarMarcacao" class="btn btn-primary">Cadastrar</button>
+  
+  </form>
 
 <table class="table">
   <thead>
     <tr>
-      <th scope="col">#</th>
+      <th scope="col">Atraso</th>
       <th scope="col">Entrada</th>
       <th scope="col">Saída</th>
-     
     </tr>
   </thead>
-  <tbody>
-    <tr>
-      <th scope="row">1</th>
-      <td>Mark</td>
-      <td>Otto</td>
-     
-    </tr>
-    <tr>
-      <th scope="row">2</th>
-      <td>Jacob</td>
-      <td>Thornton</td>
-    
-    </tr>
-    <tr>
-      <th scope="row">3</th>
-      <td colspan="2">Larry the Bird</td>
-     
-    </tr>
+  <tbody id="tabelaAtraso">
+    <!-- Os registros serão adicionados aqui dinamicamente -->
   </tbody>
 </table>
 </div>
-<div id="detalhes-usuario"></div>
+
 </div>
 
+<table class="table">
+  <thead>
+    <tr>
+      <th scope="col">Hora Extra</th>
+      <th scope="col">Entrada</th>
+      <th scope="col">Saída</th>
+    </tr>
+  </thead>
+  <tbody id="tabelaHoraExtra">
+    <!-- Os registros serão adicionados aqui dinamicamente -->
+  </tbody>
+</table>
+</div>
+
+
+ <!-- Nova div para exibir resultados -->
+    <div id="resultado"></div>
 <script>
-    function enviarFormulario() {
+//Variável para armazenar os registros cadastrados na Tabela 1
+let Tabela1 = [];
+
+function cadastrarHorario() {
+    if (Tabela1.length < 3) {
         let entrada = $('#entrada').val();
         let saida = $('#saida').val();
 
         // Cria um objeto com os dados do formulário
-        const formData = {
+        const novoRegistroT1 = {
             entrada: entrada,
             saida: saida
         };
 
-        // Faz a requisição Ajax usando jQuery
-        $.ajax({
-            type: 'POST',
-            url: 'usuario',
-            data: formData,
-            success: function(response) {
-                // Atualiza a div com os detalhes do usuário
-                $('#detalhes-usuario').html(response);
-            },
-            error: function(error) {
-                console.log('Erro na requisição Ajax:', error);
-            }
-        });
+        // Adiciona o novo registro à lista
+        Tabela1.push(novoRegistroT1);
+
+        limparCamposT1();
+        // Atualiza a exibição dos registros
+         exibirRegistrosTabela1();
+    } else {
+        alert('Limite de 3 registros atingido!');
     }
+}
+function exibirRegistrosTabela1() {
+	  // Limpa a exibição atual da tabela
+	 // $('#tabelaRegistros').empty();
+
+	  // Exibe os registros na tabela
+	   Tabela1.forEach((registro, index) => {
+	    let numeroLinha = index + 1;
+	    $('#tabelaRegistrosT1').append(`
+	      <tr>
+	        <th scope="row">${numeroLinha}</th>
+	        <td>${registro.entrada}</td>
+	        <td>${registro.saida}</td>
+	      </tr>
+	    `);
+	  });
+	}
+	
+let Tabela2 = [];
+function cadastrarMarcacao() {
+  
+        let entrada = $('#entradaT2').val();
+        let saida = $('#saidaT2').val();
+
+        // Cria um objeto com os dados do formulário
+        const novoRegistroT2 = {
+            entrada: entrada,
+            saida: saida
+        };
+
+        // Adiciona o novo registro à lista
+        Tabela2.push(novoRegistroT2);
+
+        limparCamposT2();
+        // Atualiza a exibição dos registros
+        exibirRegistrosTabela2();
+        
+        // Mostrar quando marca ponto
+         calcularAtrasoHorasExtras();
+  
+}
+//Limpa os campos do formulário
+function limparCamposT2() {
+    $('.form-control').val('');
+}
+//Limpa os campos do formulário
+function limparCamposT1() {
+    $('.form-control').val('');
+}
+
+function exibirRegistrosTabela2() {
+	  // Limpa a exibição atual da tabela
+	 // $('#tabelaRegistros').empty();
+
+	  // Exibe os registros na tabela
+	   Tabela2.forEach((registro, index) => {
+	    let numeroLinha = index + 1;
+	    $('#tabelaRegistrosT2').append(`
+	      <tr>
+	        <th scope="row">${numeroLinha}</th>
+	        <td>${registro.entrada}</td>
+	        <td>${registro.saida}</td>
+	      </tr>
+	    `);
+	  });
+	}
+
+// Função para exibir resultados na tabela de atraso
+function tabelaAtraso() {
+    // Limpa a exibição atual da tabela
+    $('#tabelaAtraso').empty();
+
+    // Exibe os resultados na tabela
+    resultado.forEach((periodo, index) => {
+        let numeroLinha = index + 1;
+
+        // Converter objetos Date para strings formatadas
+        let inicioFormatado = formatDate(periodo.inicio);
+        let fimFormatado = formatDate(periodo.fim);
+
+        // Adicionar a nova linha à tabela
+        $('#tabelaAtraso').append(`
+            <tr>
+                <th scope="row">${numeroLinha}</th>
+                <td>${inicioFormatado}</td>
+                <td>${fimFormatado}</td>
+            </tr>
+        `);
+    });
+}
+
+
+//Função para exibir resultados na tabela de horas extras
+function tabelabelaHoraExtra() {
+    // Limpa a exibição atual da tabela de horas extras
+    $('#tabelaHorasExtras').empty();
+
+    // Exibe os resultados na tabela de horas extras
+    resultadoHorasExtras.forEach((periodo, index) => {
+        let numeroLinha = index + 1;
+        $('#tabelaHorasExtras').append(`
+            <tr>
+                <th scope="row">${numeroLinha}</th>
+                <td>${formatDate(periodo.inicio)}</td>
+                <td>${formatDate(periodo.fim)}</td>
+            </tr>
+        `);
+    });
+}
+//Evento de clique no botão Cadastrar
+$('#cadastrarHorario').click(function() {
+  cadastrarHorario();
+});
+
+//Evento de clique no botão Cadastrar
+$('#cadastrarMarcacao').click(function() {
+	cadastrarMarcacao();
+});
+
+//Função para calcular atrasos e horas extras
+function calcularAtrasoHorasExtras() {
+    // Construir arrays de entrada e saída para enviar ao back-end
+    let tabelaHorario = Tabela1.map(registro => `${registro.entrada}-${registro.saida}`);
+    let tabelaMarcacoes = Tabela2.map(registro => `${registro.entrada}-${registro.saida}`);
+
+ // Fazer requisição AJAX para o back-end
+    $.ajax({
+        type: "POST",
+        url: "calcularHoras",
+        data: {
+            tabelaHorario: tabelaHorario.join(","),
+            tabelaMarcacoes: tabelaMarcacoes.join(",")
+        },
+        success: function(data) {
+        	
+            console.log(typeof data)
+            // Verificar se o resultado é um objeto com propriedades 'atrasos' e 'horasExtras'
+            if (data.atrasos && data.horasExtras) {
+                // Atualizar a variável resultado com os dados recebidos
+                resultadoAtrasos = data.atrasos;
+                resultadoHorasExtras = data.horasExtras;
+
+                // Exibir os resultados nas tabelas
+                tabelaAtraso();
+                tabelaHoraExtra();
+            } else {
+                alert('Erro: Resposta do servidor não possui a estrutura esperada.');
+            }
+        },
+        error: function() {
+            alert('Erro ao calcular atrasos e horas extras.');
+        }
+    });
+}
+    
+    // Função para exibir resultados na tabela
+    function tabelaAtraso() {
+        // Limpa a exibição atual da tabela
+      //  $('#tabelaAtraso').empty();
+     
+        // Exibe os resultados na tabela
+        resultado.forEach((periodo, index) => {
+            let numeroLinha = index + 1;
+
+            // Converter objetos Date para strings formatadas
+            let inicioFormatado = formatDate(periodo.inicio);
+            let fimFormatado = formatDate(periodo.fim);
+
+            // Adicionar a nova linha à tabela
+            $('#tabelaAtraso').append(`
+                <tr>
+                    <th scope="row">${numeroLinha}</th>
+                    <td>${inicioFormatado}</td>
+                    <td>${fimFormatado}</td>
+                </tr>
+            `);
+        });
+
+      
+    }
+
+    // Função para formatar uma data
+    function formatDate(date) {
+        var options = { hour: 'numeric', minute: 'numeric' };
+        return new Date(date).toLocaleTimeString('pt-BR', options);
+    }
+
+  
+ 
+
+
+
 </script>
 </body>
 </html>
