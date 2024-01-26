@@ -86,19 +86,6 @@
 </div>
 </div>
 
-<table class="table">
-  <thead>
-    <tr>
-      <th scope="col">#</th>
-      <th scope="col">Entrada</th>
-      <th scope="col">Saída</th>
-    </tr>
-  </thead>
-  <tbody id="tabelaAtraso">
-    <!-- Os registros serão adicionados aqui dinamicamente -->
-  </tbody>
-</table>
-</div>
 </div>
 
 </div>
@@ -119,8 +106,26 @@
 
   
   <button type="button" id="cadastrarMarcacao" class="btn btn-primary">Cadastrar</button>
-  
+ 
   </form>
+
+<table class="table">
+  <thead>
+    <tr>
+      <th scope="col">#</th>
+      <th scope="col">Entrada</th>
+      <th scope="col">Saída</th>
+    </tr>
+  </thead>
+  <tbody id="tabelaRegistrosT2">
+    <!-- Os registros serão adicionados aqui dinamicamente -->
+  </tbody>
+</table>
+</div>
+
+</div>
+
+
 
 <table class="table">
   <thead>
@@ -164,28 +169,40 @@ function cadastrarHorario() {
         let entrada = $('#entrada').val();
         let saida = $('#saida').val();
 
-        // Cria um objeto com os dados do formulário
-        const novoRegistroT1 = {
-            entrada: entrada,
-            saida: saida
-        };
+        // Verifica se o novo registro já existe na tabela
+        const registroExistente = Tabela1.find(registro => registro.entrada === entrada && registro.saida === saida);
+        
+        if(registroExistente){
+        	
+        	alert("Horario já existe!");
+        }
 
-        // Adiciona o novo registro à lista
-        Tabela1.push(novoRegistroT1);
+        if (!registroExistente) {
+            // Cria um objeto com os dados do formulário
+            const novoRegistroT1 = {
+                entrada: entrada,
+                saida: saida
+            };
 
-        limparCamposT1();
-        // Atualiza a exibição dos registros
-         exibirRegistrosTabela1();
+            // Adiciona o novo registro à tabela
+            Tabela1.push(novoRegistroT1);
+
+            limparCamposT1();
+            // Atualiza a exibição dos registros
+            exibirRegistrosTabela1();
+        } else {
+            alert('Os dados já existem na tabela!');
+        }
     } else {
         alert('Limite de 3 registros atingido!');
     }
 }
 function exibirRegistrosTabela1() {
 	  // Limpa a exibição atual da tabela
-	 // $('#tabelaRegistros').empty();
+	  $('#tabelaRegistrosT1').empty();
 
 	  // Exibe os registros na tabela
-	   Tabela1.forEach((registro, index) => {
+	   Tabela2.forEach((registro, index) => {
 	    let numeroLinha = index + 1;
 	    $('#tabelaRegistrosT1').append(`
 	      <tr>
@@ -197,17 +214,38 @@ function exibirRegistrosTabela1() {
 	  });
 	}
 	
+	
+function exibirRegistrosTabela2() {
+	  // Limpa a exibição atual da tabela
+	  $('#tabelaRegistrosT2').empty();
+
+	  // Exibe os registros na tabela
+	   Tabela1.forEach((registro, index) => {
+	    let numeroLinha = index + 1;
+	    $('#tabelaRegistrosT2').append(`
+	      <tr>
+	        <th scope="row">${numeroLinha}</th>
+	        <td>${registro.entrada}</td>
+	        <td>${registro.saida}</td>
+	      </tr>
+	    `);
+	  });
+	}
+	
+	
 let Tabela2 = [];
 function cadastrarMarcacao() {
   
         let entrada = $('#entradaT2').val();
         let saida = $('#saidaT2').val();
 
-        // Cria um objeto com os dados do formulário
-        const novoRegistroT2 = {
-            entrada: entrada,
-            saida: saida
-        };
+   
+    
+            // Cria um objeto com os dados do formulário
+            const novoRegistroT2 = {
+                entrada: entrada,
+                saida: saida
+            }
 
         // Adiciona o novo registro à lista
         Tabela2.push(novoRegistroT2);
@@ -216,8 +254,8 @@ function cadastrarMarcacao() {
         // Atualiza a exibição dos registros
         exibirRegistrosTabela2();
         
-        // Mostrar quando marca ponto
-         calcularAtrasoHorasExtras();
+      //Chamada da função para calcular atrasos e horas extras
+        calcularAtrasoHorasExtras();
   
 }
 //Limpa os campos do formulário
@@ -231,7 +269,7 @@ function limparCamposT1() {
 
 function exibirRegistrosTabela2() {
 	  // Limpa a exibição atual da tabela
-	 // $('#tabelaRegistros').empty();
+	  $('#tabelaRegistrosT2').empty();
 
 	  // Exibe os registros na tabela
 	   Tabela2.forEach((registro, index) => {
@@ -246,48 +284,9 @@ function exibirRegistrosTabela2() {
 	  });
 	}
 
-// Função para exibir resultados na tabela de atraso
-function tabelaAtraso() {
-    // Limpa a exibição atual da tabela
-    $('#tabelaAtraso').empty();
-
-    // Exibe os resultados na tabela
-    resultado.forEach((periodo, index) => {
-        let numeroLinha = index + 1;
-
-        // Converter objetos Date para strings formatadas
-        let inicioFormatado = formatDate(periodo.inicio);
-        let fimFormatado = formatDate(periodo.fim);
-
-        // Adicionar a nova linha à tabela
-        $('#tabelaAtraso').append(`
-            <tr>
-                <th scope="row">${numeroLinha}</th>
-                <td>${inicioFormatado}</td>
-                <td>${fimFormatado}</td>
-            </tr>
-        `);
-    });
-}
 
 
-//Função para exibir resultados na tabela de horas extras
-function tabelabelaHoraExtra() {
-    // Limpa a exibição atual da tabela de horas extras
-    $('#tabelaHorasExtras').empty();
 
-    // Exibe os resultados na tabela de horas extras
-    resultadoHorasExtras.forEach((periodo, index) => {
-        let numeroLinha = index + 1;
-        $('#tabelaHorasExtras').append(`
-            <tr>
-                <th scope="row">${numeroLinha}</th>
-                <td>${formatDate(periodo.inicio)}</td>
-                <td>${formatDate(periodo.fim)}</td>
-            </tr>
-        `);
-    });
-}
 //Evento de clique no botão Cadastrar
 $('#cadastrarHorario').click(function() {
   cadastrarHorario();
@@ -298,68 +297,79 @@ $('#cadastrarMarcacao').click(function() {
 	cadastrarMarcacao();
 });
 
-//Função para calcular atrasos e horas extras
+//Definir variáveis globais para armazenar os resultados
+let resultadoAtrasos = [];
+let resultadoHorasExtras = [];
 function calcularAtrasoHorasExtras() {
-    // Construir arrays de entrada e saída para enviar ao back-end
-    let tabelaHorario = Tabela1.map(registro => `${registro.entrada}-${registro.saida}`);
-    let tabelaMarcacoes = Tabela2.map(registro => `${registro.entrada}-${registro.saida}`);
+    // Verificar se as tabelas estão definidas
+    if (Tabela1 && Tabela2) {
+        // Construir objeto com os dados das tabelas
+              // Construir arrays com os dados das tabelas
+        let tabelaHorario = Tabela1.map(objeto => `${objeto.entrada}-${objeto.saida}`);
+        let tabelaMarcacoes = Tabela2.map(objeto => `${objeto.entrada}-${objeto.saida}`);
 
- // Fazer requisição AJAX para o back-end
-    $.ajax({
-        type: "POST",
-        url: "calcularHoras",
-        data: {
-            tabelaHorario: tabelaHorario.join(","),
-            tabelaMarcacoes: tabelaMarcacoes.join(",")
-        },
-        success: function(data) {
-        	
-            console.log(typeof data)
-            // Verificar se o resultado é um objeto com propriedades 'atrasos' e 'horasExtras'
-            if (data.atrasos && data.horasExtras) {
-                // Atualizar a variável resultado com os dados recebidos
+        // Fazer requisição AJAX para o back-end
+        $.ajax({
+            type: "POST",
+            url: "calcularHoras",
+            data: {
+                tabelaHorario: JSON.stringify(tabelaHorario),
+                tabelaMarcacoes: JSON.stringify(tabelaMarcacoes)
+            },
+            success: function(data) {
+                // Atualizar as variáveis resultado com os dados recebidos
                 resultadoAtrasos = data.atrasos;
                 resultadoHorasExtras = data.horasExtras;
 
                 // Exibir os resultados nas tabelas
                 tabelaAtraso();
-                tabelaHoraExtra();
-            } else {
-                alert('Erro: Resposta do servidor não possui a estrutura esperada.');
+                // tabelaHoraExtra();
+            },
+            error: function() {
+                alert('Erro ao calcular atrasos e horas extras.');
             }
-        },
-        error: function() {
-            alert('Erro ao calcular atrasos e horas extras.');
-        }
+        });
+    } else {
+        alert('Erro: As tabelas não estão definidas ou estão vazias.');
+    }
+}
+//Função para exibir resultados na tabela de atraso
+function tabelaAtraso() {
+    // Limpar a exibição atual da tabela de atrasos
+     $('#tabelaAtraso').empty();
+
+    // Exibir os resultados na tabela de atrasos
+    resultadoAtrasos.forEach((periodo, index) => {
+        let numeroLinha = index + 1;
+
+        // Adicionar a nova linha à tabela de atrasos
+        $('#tabelaAtraso').append(`
+            <tr>
+                <th scope="row">${numeroLinha}</th>
+                <td>${periodo.inicio}</td>
+                <td>${periodo.fim}</td>
+            </tr>
+        `);
     });
 }
-    
-    // Função para exibir resultados na tabela
-    function tabelaAtraso() {
-        // Limpa a exibição atual da tabela
-      //  $('#tabelaAtraso').empty();
-     
-        // Exibe os resultados na tabela
-        resultado.forEach((periodo, index) => {
-            let numeroLinha = index + 1;
 
-            // Converter objetos Date para strings formatadas
-            let inicioFormatado = formatDate(periodo.inicio);
-            let fimFormatado = formatDate(periodo.fim);
+//Função para exibir resultados na tabela de horas extras
+function tabelaHoraExtra() {
+ // Limpar a exibição atual da tabela de horas extras
+ $('#tabelaHorasExtras').empty();
 
-            // Adicionar a nova linha à tabela
-            $('#tabelaAtraso').append(`
-                <tr>
-                    <th scope="row">${numeroLinha}</th>
-                    <td>${inicioFormatado}</td>
-                    <td>${fimFormatado}</td>
-                </tr>
-            `);
-        });
-
-      
-    }
-
+ // Exibir os resultados na tabela de horas extras
+ resultadoHorasExtras.forEach((periodo, index) => {
+     let numeroLinha = index + 1;
+     $('#tabelaHorasExtras').append(`
+         <tr>
+             <th scope="row">${numeroLinha}</th>
+             <td>${formatDate(periodo.inicio)}</td>
+             <td>${formatDate(periodo.fim)}</td>
+         </tr>
+     `);
+ });
+}
     // Função para formatar uma data
     function formatDate(date) {
         var options = { hour: 'numeric', minute: 'numeric' };
@@ -367,9 +377,6 @@ function calcularAtrasoHorasExtras() {
     }
 
   
- 
-
-
 
 </script>
 </body>
