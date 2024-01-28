@@ -2,6 +2,7 @@ package servlet;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonArray;
+import com.google.gson.JsonObject;
 
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
@@ -31,6 +32,8 @@ public class CalcularHorasServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
     	
     	   List<String> atrasos = new ArrayList<>(); // Inicializa a lista aqui
+    	   List<String> horasExtras = new ArrayList<>();
+    	  
         try {
             // Obter parâmetros do request
             String[] tabelaHorarioParam = request.getParameterValues("tabelaHorario");
@@ -38,25 +41,10 @@ public class CalcularHorasServlet extends HttpServlet {
 
             // Converter os parâmetros para listas de períodos
             List<String> tabelaHorario = converterHorarios(tabelaHorarioParam);
-            // List<Periodo> tabelaMarcacoes = converterStringParaLista(tabelaMarcacoesParam);
-          //  atrasos.add("Exemplo de atraso");
-            // Calcular a subtração para atrasos e horas extras
-            // List<Periodo> atrasos = calcularAtraso(tabelaHorario, tabelaMarcacoes);
-            // List<Periodo> horasExtras = calcularHoraExtra(tabelaHorario, tabelaMarcacoes, false);
-
-            // Enviar os resultados para o front-end
-            // response.setContentType("application/json");
-            // response.setCharacterEncoding("UTF-8");
-
-            // Configurar Gson para lidar com a serialização de datas
-            // Gson gson = new GsonBuilder().setDateFormat("HH:mm").create();
-
-            // Criar um objeto JSON que contenha ambas as listas
-            // String resultadoJson = gson.toJson(new Resultado(atrasos, horasExtras));
-
-            // Escrever o JSON no response
-            // response.getWriter().write(resultadoJson);
-            
+           // List<Periodo> tabelaMarcacoes = converterStringParaLista(tabelaMarcacoesParam);
+     
+          
+     
 
             
          // Lista para armazenar os objetos WorkSchedule
@@ -286,6 +274,7 @@ public class CalcularHorasServlet extends HttpServlet {
 			                String formattedhour= String.format("%02d", hour);
 
 							horaExtra += " " + formattedhour + ":" + formattedDepartureMinute;
+							horasExtras.add(horaExtra);
 							System.out.println("Hora extra após o expediente: " + horaExtra);
 						}
 					}
@@ -300,31 +289,48 @@ public class CalcularHorasServlet extends HttpServlet {
 				String formattedDepartureHour= String.format("%02d", markerDepartureHour);
 				String formattedDepartureMinuter= String.format("%02d", markerDepartureMinute);
                 String formattedhour= String.format("%02d", hour);
+                String formattelastMinute= String.format("%02d", lastMinute);
                 
-				String horasExtrasRestantes = formattedhour + ":" + lastMinute + " " +  formattedDepartureHour + ":" + formattedDepartureMinuter;  
+				String horasExtrasRestantes = formattedhour + ":" + formattelastMinute + " " +  formattedDepartureHour + ":" + formattedDepartureMinuter; 
+				horasExtras.add(horasExtrasRestantes);
 				System.out.println("Hora extra após expediente: " + horasExtrasRestantes);
 			}
 
 
 
-			// Enviar os resultados para o front-end
-			response.setContentType("application/json");  // Defina o tipo de conteúdo como JSON
-			response.setCharacterEncoding("UTF-8");
+		    // Enviar os resultados para o front-end
+	        response.setContentType("application/json");
+	        response.setCharacterEncoding("UTF-8");
 
-			// Cria um PrintWriter para escrever na resposta
-			PrintWriter out = response.getWriter();
+	        // Cria um PrintWriter para escrever na resposta
+	        PrintWriter out = response.getWriter();
 
-			// Converte a lista de atrasos para um array JSON
-			JsonArray atrasosJsonArray = new JsonArray();
-			atrasos.forEach(atraso -> atrasosJsonArray.add(atraso));
+	        // Converte as listas para arrays JSON
+	        JsonArray atrasosJsonArray = new JsonArray();
+	        atrasos.forEach(atraso -> atrasosJsonArray.add(atraso));
+
+	        JsonArray horasExtrasJsonArray = new JsonArray();
+	        horasExtras.forEach(horaExtras -> horasExtrasJsonArray.add(horaExtras));
+
+	        // Cria um objeto JSON que contém as listas de atrasos e horasExtras
+	        JsonObject jsonResponse = new JsonObject();
+	        jsonResponse.add("atrasos", atrasosJsonArray);
+	        jsonResponse.add("horasExtras", horasExtrasJsonArray);
             
-			Gson gson = new Gson();
-			String atrasosJson = gson.toJson(atrasosJsonArray); // Convertendo o array JSON para uma string JSON
+	        Gson gson = new Gson();
+	        // Converte o objeto JSON para uma string JSON
+	        String jsonResponseString = gson.toJson(jsonResponse);
 
-			out.println(atrasosJson);
+	        // Envia a resposta para o front-end
+	        out.println(jsonResponseString);
 
-			// Fecha o PrintWriter
-			out.close();
+	        // Fecha o PrintWriter
+	        out.close();
+	    
+			
+			
+		
+			
             
             
         } catch (Exception e) {

@@ -318,16 +318,15 @@ function calcularAtrasoHorasExtras() {
         // tabelaMarcacoes: JSON.stringify(tabelaMarcacoes)
     },
     success: function(data) {
-        if (data) {
-            let resultadoAtrasos = data;
-
-            // Exibir os resultados nas tabelas
+    
+            resultadoAtrasos = data.atrasos;      
+          // Exibir os resultados nas tabelas
             tabelaAtraso(resultadoAtrasos);
-            // tabelaHoraExtra(resultadoHorasExtras);
-        } else {
-            console.error('Resposta inesperada do servidor:', data);
-            alert('Erro ao obter dados de atrasos e horas extras.');
-        }
+        
+        	 resultadoHorasExtras = data.horasExtras;	
+               
+            tabelaHoraExtra(resultadoHorasExtras);
+        
     },
     error: function() {
         alert('Erro ao calcular atrasos e horas extras.');
@@ -367,18 +366,22 @@ function tabelaAtraso(resultadoAtrasos) {
 function tabelaHoraExtra() {
  // Limpar a exibição atual da tabela de horas extras
  $('#tabelaHorasExtras').empty();
-
+ if (Array.isArray(resultadoHorasExtras)) {
  // Exibir os resultados na tabela de horas extras
- resultadoHorasExtras.forEach((periodo, index) => {
-     let numeroLinha = index + 1;
-     $('#tabelaHorasExtras').append(`
-         <tr>
-             <th scope="row">${numeroLinha}</th>
-             <td>${formatDate(periodo.inicio)}</td>
-             <td>${formatDate(periodo.fim)}</td>
-         </tr>
-     `);
- });
+	  resultadoHorasExtras.forEach((horasExtras) => {
+          // Dividir a string em horarioInicio e horarioFim
+          let [horarioInicio, horarioFim] = horasExtras.split(' ');
+
+          // Adicionar a nova linha à tabela de atrasos
+          $('#tabelaHoraExtra').append(`
+              <tr>
+          	    <th scope="row">#</th>
+                  <td>${horarioInicio}</td>
+                  <td>${horarioFim}</td>
+              </tr>
+          `);
+      });
+}
 }
     // Função para formatar uma data
     function formatDate(date) {
