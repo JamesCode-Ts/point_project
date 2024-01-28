@@ -12,7 +12,7 @@ html, body {
     align-items: center;
     width: auto;
     margin-top: 50px;
-    box-shadow: rgba(0, 0, 0, 0.12) 1.95px 1.70px 2.3px;
+    box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px;
 }
 
 
@@ -20,13 +20,33 @@ html, body {
     margin-bottom: 10px;
    }
    
+   .form-label{
+   
+    margin-left: 10px;
+   
+   }
+   
    .row{
    
    width:700px; 
-   margin-bottom: 40px
+   margin-bottom: 40px;
+ 
    
    
    }
+   .col{
+     margin-left: 10px;
+   
+   }
+   
+   
+   
+   .container-atraso{
+   margin-top: 40px;
+   
+   }
+   
+   
 
 .tabela-marcacao{
 	
@@ -35,7 +55,7 @@ html, body {
     align-items: center;
     width: auto;
     margin-top: 50px;
-    box-shadow: 1px 1px 1px rgba(0, 0, 0, 0.1);
+    box-shadow: rgba(0, 0, 0, 0.02) 0px 1px 3px 0px, rgba(27, 31, 35, 0.15) 0px 0px 0px 1px;
     
 }
 
@@ -47,15 +67,14 @@ html, body {
 
 
 .table-Atraso{
-	
-	
+
 	
     display: flex;
     justify-content: center;
     align-items: center;
     width: auto;
     margin-top: 50px;
-    box-shadow: 1px 1px 1px rgba(0, 0, 0, 0.1);
+    box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
     
 	
 	
@@ -69,7 +88,7 @@ html, body {
     align-items: center;
     width: auto;
     margin-top: 50px;
-    box-shadow: 1px 1px 1px rgba(0, 0, 0, 0.1);
+    box-shadow: rgba(0, 0, 0, 0.02) 0px 1px 3px 0px, rgba(27, 31, 35, 0.15) 0px 0px 0px 1px;
 	
 }
 
