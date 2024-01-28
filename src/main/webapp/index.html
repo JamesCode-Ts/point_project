@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Detalhes do Usuário</title>
+    <title>Horas Trabalhadas</title>
     <link rel="stylesheet" type="text/css" href="/point_project/css/style.css">
 
     <!-- Inclua a biblioteca jQuery -->
@@ -15,148 +15,104 @@
       
 
 </head>
+
 <body>
 
-<nav class="navbar navbar-expand-lg navbar-light bg-light">
-    <a class="navbar-brand" href="#">Navbar</a>
-    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-        <span class="navbar-toggler-icon"></span>
-    </button>
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <a class="navbar-brand" href="#">Horas Trabalhadas</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+    </nav>
+ <div class ="container">
+    <div class="tabela-horario">
 
-    <div class="collapse navbar-collapse" id="navbarSupportedContent">
-        <ul class="navbar-nav mr-auto">
-            <li class="nav-item active">
-                <a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="#">Link</a>
-            </li>
-            <li class="nav-item dropdown">
-                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                    Dropdown
-                </a>
-                <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                    <a class="dropdown-item" href="#">Action</a>
-                    <a class="dropdown-item" href="#">Another action</a>
-                    <div class="dropdown-divider"></div>
-                    <a class="dropdown-item" href="#">Something else here</a>
+        <form id="userForm1">
+            <label for="exampleFormControlInput1" style="margin-top:5px" class="form-label">Horário de Trabalho:</label>
+            <div class="row">
+                <div class="col">
+                    <input type="text" class="form-control" id="entrada" placeholder="Entrada" aria-label="First name">
                 </div>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link disabled" href="#">Disabled</a>
-            </li>
-        </ul>
-        <form class="form-inline my-2 my-lg-0">
-            <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
-            <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+                <div class="col">
+                    <input type="text" class="form-control" id="saida" placeholder="Saída" aria-label="Last name">
+                </div>
+                <button type="button" id="cadastrarHorario" class="btn btn-primary">Cadastrar</button>
+            </div>
         </form>
+
+        <table class="table">
+            <thead>
+                <tr>
+                    <th scope="col">Registros</th>
+                    <th scope="col">Entrada</th>
+                    <th scope="col">Saída</th>
+                </tr>
+            </thead>
+            <tbody id="tabelaRegistrosT1">
+                <!-- Os registros serão adicionados aqui dinamicamente -->
+            </tbody>
+        </table>
+
     </div>
-</nav>
 
-<div class="tabela-horario">
- 
-<form id="userForm1">
-    <label for="exampleFormControlInput1" style="margin-top:5px" class="form-label">Horário de Trabalho:</label>
-   <div class="row">
-  <div class="col">
- 
-    <input type="text" class="form-control"  id="entrada" placeholder="Entrada" aria-label="First name">
-  </div>
-  <div class="col">
-    <input type="text" class="form-control" id="saida" placeholder="Saída" aria-label="Last name">
-  </div>
+    <div class="tabela-marcacao">
 
+        <form id="userForm2">
+            <label for="exampleFormControlInput1" style="margin-top:5px" class="form-label">Marcações Feitas:</label>
+            <div class="row">
+                <div class="col">
+                    <input type="text" class="form-control" id="entradaT2" placeholder="Entrada" aria-label="First name">
+                </div>
+                <div class="col">
+                    <input type="text" class="form-control" id="saidaT2" placeholder="Saída" aria-label="Last name">
+                </div>
+                  <button type="button" id="cadastrarMarcacao" class="btn btn-primary">Cadastrar</button>
+            </div>
+          
+        </form>
 
-  
-     <button type="button" id="cadastrarHorario" class="btn btn-primary">Cadastrar</button>
-</form>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th scope="col">Registros</th>
+                    <th scope="col">Entrada</th>
+                    <th scope="col">Saída</th>
+                </tr>
+            </thead>
+            <tbody id="tabelaRegistrosT2">
+                <!-- Os registros serão adicionados aqui dinamicamente -->
+            </tbody>
+        </table>
+    </div>
 
-<table class="table">
-  <thead>
-    <tr>
-      <th scope="col">#</th>
-      <th scope="col">Entrada</th>
-      <th scope="col">Saída</th>
-    </tr>
-  </thead>
-  <tbody id="tabelaRegistrosT1">
-    <!-- Os registros serão adicionados aqui dinamicamente -->
-  </tbody>
-</table>
+    <table class="table">
+        <thead>
+            <tr>
+                <th scope="col">Atraso</th>
+                <th scope="col">Entrada</th>
+                <th scope="col">Saída</th>
+            </tr>
+        </thead>
+        <tbody id="tabelaAtraso">
+            <!-- Os registros serão adicionados aqui dinamicamente -->
+        </tbody>
+    </table>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th scope="col">Hora Extra</th>
+                <th scope="col">Entrada</th>
+                <th scope="col">Saída</th>
+            </tr>
+        </thead>
+        <tbody id="tabelaHoraExtra">
+            <!-- Os registros serão adicionados aqui dinamicamente -->
+        </tbody>
+    </table>
 </div>
-</div>
-
-
-
-
-
-<div class="tabela-marcacao">
- 
-<form id="userForm2">
-    <label for="exampleFormControlInput1" style="margin-top:5px" class="form-label">Marcações Feitas:</label>
-   <div class="row">
-  <div class="col">
- 
-    <input type="text" class="form-control"  id="entradaT2" placeholder="Entrada" aria-label="First name">
-  </div>
-  <div class="col">
-    <input type="text" class="form-control"  id="saidaT2"placeholder="Saída" aria-label="Last name">
-  </div>
-
-
-  
-  <button type="button" id="cadastrarMarcacao" class="btn btn-primary">Cadastrar</button>
- 
-  </form>
-
-<table class="table">
-  <thead>
-    <tr>
-      <th scope="col">#</th>
-      <th scope="col">Entrada</th>
-      <th scope="col">Saída</th>
-    </tr>
-  </thead>
-  <tbody id="tabelaRegistrosT2">
-    <!-- Os registros serão adicionados aqui dinamicamente -->
-  </tbody>
-</table>
-</div>
-
-</div>
-
-
-
-<table class="table">
-  <thead>
-    <tr>
-      <th scope="col">Atraso</th>
-      <th scope="col">Entrada</th>
-      <th scope="col">Saída</th>
-    </tr>
-  </thead>
-  <tbody id="tabelaAtraso">
-    <!-- Os registros serão adicionados aqui dinamicamente -->
-  </tbody>
-</table>
-</div>
-
-</div>
-
-<table class="table">
-  <thead>
-    <tr>
-      <th scope="col">Hora Extra</th>
-      <th scope="col">Entrada</th>
-      <th scope="col">Saída</th>
-    </tr>
-  </thead>
-  <tbody id="tabelaHoraExtra">
-    <!-- Os registros serão adicionados aqui dinamicamente -->
-  </tbody>
-</table>
-</div>
-
+    <!-- Adicione aqui seus scripts ou outras dependências JS --
 
  <!-- Nova div para exibir resultados -->
     <div id="resultado"></div>
@@ -191,7 +147,7 @@ function cadastrarHorario() {
             // Atualiza a exibição dos registros
             exibirRegistrosTabela1();
             
-            calcularAtrasoHorasExtras();
+           
 
         } else {
             alert('Os dados já existem na tabela!');
@@ -220,7 +176,7 @@ function exibirRegistrosTabela1() {
 	
 function exibirRegistrosTabela2() {
 	  // Limpa a exibição atual da tabela
-	  $('#tabelaRegistrosT2').empty();
+	//  $('#tabelaRegistrosT2').empty();
 
 	  // Exibe os registros na tabela
 	   Tabela2.forEach((registro, index) => {
@@ -257,8 +213,9 @@ function cadastrarMarcacao() {
         // Atualiza a exibição dos registros
         exibirRegistrosTabela2();
         
+        
       //Chamada da função para calcular atrasos e horas extras
-  
+        calcularAtrasoHorasExtras();
 }
 //Limpa os campos do formulário
 function limparCamposT2() {
@@ -269,7 +226,9 @@ function limparCamposT1() {
     $('.form-control').val('');
 }
 
-function exibirRegistrosTabela2() {
+/*
+ * 
+unction exibirRegistrosTabela2() {
 	  // Limpa a exibição atual da tabela
 	  $('#tabelaRegistrosT2').empty();
 
@@ -286,7 +245,7 @@ function exibirRegistrosTabela2() {
 	  });
 	}
 
-
+ */
 
 
 //Evento de clique no botão Cadastrar
@@ -296,7 +255,7 @@ $('#cadastrarHorario').click(function() {
 
 //Evento de clique no botão Cadastrar
 $('#cadastrarMarcacao').click(function() {
-//	cadastrarMarcacao();
+	cadastrarMarcacao();
 });
 
 //Definir variáveis globais para armazenar os resultados
@@ -308,25 +267,32 @@ function calcularAtrasoHorasExtras() {
         // Construir objeto com os dados das tabelas
               // Construir arrays com os dados das tabelas
         let tabelaHorario = Tabela1.map(objeto => `${objeto.entrada}-${objeto.saida}`);
-     //   let tabelaMarcacoes = Tabela2.map(objeto => `${objeto.entrada}-${objeto.saida}`);
+        let tabelaMarcacoes = Tabela2.map(objeto => `${objeto.entrada}-${objeto.saida}`);
 
     $.ajax({
     type: "POST",
     url: "calcularHoras",
     data: {
         tabelaHorario: JSON.stringify(tabelaHorario),
-        // tabelaMarcacoes: JSON.stringify(tabelaMarcacoes)
+        tabelaMarcacoes: JSON.stringify(tabelaMarcacoes)
     },
     success: function(data) {
-    
+    	
+    	if(data){
+    		
+    		Tabela2 = [];
+    		
             resultadoAtrasos = data.atrasos;      
           // Exibir os resultados nas tabelas
             tabelaAtraso(resultadoAtrasos);
         
-        	 resultadoHorasExtras = data.horasExtras;	
+        	resultadoHorasExtras = data.horasExtras;	
                
             tabelaHoraExtra(resultadoHorasExtras);
-        
+    	}else{
+    		
+    		alert('Nenhum retorno do back-end.')
+    	}
     },
     error: function() {
         alert('Erro ao calcular atrasos e horas extras.');

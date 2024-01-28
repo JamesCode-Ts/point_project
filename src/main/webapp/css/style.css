@@ -7,37 +7,74 @@ html, body {
 }
 
 .tabela-horario {
+ 
+    flex-direction: column;
+    align-items: center;
+    width: auto;
+    margin-top: 50px;
+    box-shadow: rgba(0, 0, 0, 0.12) 1.95px 1.70px 2.3px;
+}
+
+
+  .form-group {
+    margin-bottom: 10px;
+   }
+   
+   .row{
+   
+   width:700px; 
+   margin-bottom: 40px
+   
+   
+   }
+
+.tabela-marcacao{
+	
+   
+    flex-direction: column;
+    align-items: center;
+    width: auto;
+    margin-top: 50px;
+    box-shadow: 1px 1px 1px rgba(0, 0, 0, 0.1);
+    
+}
+
+.container{
+	
+	width: 800px;
+}
+
+
+
+.table-Atraso{
+	
+	
+	
     display: flex;
     justify-content: center;
     align-items: center;
     width: auto;
     margin-top: 50px;
     box-shadow: 1px 1px 1px rgba(0, 0, 0, 0.1);
+    
+	
+	
 }
 
-.tabela-marcacao{
+*/
+.table-HoraExtra{
 	
-	display: flex;
+    display: flex;
     justify-content: center;
     align-items: center;
     width: auto;
     margin-top: 50px;
     box-shadow: 1px 1px 1px rgba(0, 0, 0, 0.1);
-    
+	
 }
 
-tabela-atraso{
-	
-	display: flex;
-    justify-content: center;
-    align-items: center;
-    width: auto;
-    margin-top: 50px;
-    box-shadow: 1px 1px 1px rgba(0, 0, 0, 0.1);
-    
-	
-	
-}
+*/
+
 .table{
 	margin-top: 40px;
 	

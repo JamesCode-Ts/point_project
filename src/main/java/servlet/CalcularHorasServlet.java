@@ -37,11 +37,13 @@ public class CalcularHorasServlet extends HttpServlet {
         try {
             // Obter parâmetros do request
             String[] tabelaHorarioParam = request.getParameterValues("tabelaHorario");
-            // String[] tabelaMarcacoesParam = request.getParameterValues("tabelaMarcacoes");
+            String tabelaMarcacoesParam = request.getParameter("tabelaMarcacoes");
 
             // Converter os parâmetros para listas de períodos
             List<String> tabelaHorario = converterHorarios(tabelaHorarioParam);
-           // List<Periodo> tabelaMarcacoes = converterStringParaLista(tabelaMarcacoesParam);
+            String tabelaMarcacoes = converterMarcacao(tabelaMarcacoesParam);
+            
+          
      
           
      
@@ -64,11 +66,27 @@ public class CalcularHorasServlet extends HttpServlet {
                     }
                 }
                 
-              
+                
+                
+                HourMarker hm = criarHourSchedule(tabelaMarcacoes);
+
+                if (hm != null) {
+                	
+                    int markerEntryHour = Integer.parseInt(hm.getEntryHour().split(":")[0]);
+                    int markerEntryMinute = Integer.parseInt(hm.getEntryHour().split(":")[1]);
+
+                    int markerDepartureHour = Integer.parseInt(hm.getDepartureTime().split(":")[0]);
+                    int markerDepartureMinute = Integer.parseInt(hm.getDepartureTime().split(":")[1]);
+
+                    // Use as variáveis conforme necessário
+                    System.out.println("Entrada: " + markerEntryHour + ":" + markerEntryMinute);
+                    System.out.println("Saída: " + markerDepartureHour + ":" + markerDepartureMinute);
+                }
+
             
            // schedules.add(new WorkSchedule("22:00","05:00"));
-			
-	     	HourMarker hm = new HourMarker("03:00", "07:00");
+		//	List<HourMarker> hm = new HourMarker(null, null);
+	     	//HourMarker hm = new HourMarker("06:00", "20:00");
 			
 			int markerEntryHour = Integer.parseInt(hm.getEntryHour().split(":")[0]);
 			int markerEntryMinute = Integer.parseInt(hm.getEntryHour().split(":")[1]);
@@ -362,6 +380,32 @@ public class CalcularHorasServlet extends HttpServlet {
         }
         return horariosFormatados;
     }
+    
+    public static String converterMarcacao(String horarios) {
+        StringBuilder horariosFormatados = new StringBuilder();
+
+        // Remove os colchetes "[" e "]" se estiverem presentes
+        horarios = horarios.replaceAll("\\[|\\]", "");
+
+        // Remove as aspas duplas
+        horarios = horarios.replaceAll("\"", "");
+
+        // Usar split para obter uma array de horários
+        String[] horariosSeparados = horarios.split(",");
+        
+        for (String horarioSeparado : horariosSeparados) {
+            // Remove espaços em branco antes e depois do horário e adiciona ao resultado formatado
+            horariosFormatados.append(horarioSeparado.trim()).append(", ");
+        }
+
+        // Remove a última vírgula e espaço adicionados no loop
+        if (horariosFormatados.length() > 0) {
+            horariosFormatados.delete(horariosFormatados.length() - 2, horariosFormatados.length());
+        }
+
+        return horariosFormatados.toString();
+    }
+
 
 
 			    
@@ -380,6 +424,25 @@ public class CalcularHorasServlet extends HttpServlet {
             System.err.println("Formato inválido para criar WorkSchedule: " + horarioFormatado);
             return null;
         }
+    }
+    
+    
+    // Método para criar instância de WorkSchedule a partir de um horário formatado
+    private static HourMarker criarHourSchedule(String horarioFormatado) {
+        String[] partes = horarioFormatado.split("-");
+
+        if (partes.length == 2) {
+            String horarioEntrada = partes[0];
+            String horarioSaida = partes[1];
+
+            // Cria e retorna uma instância de WorkSchedule com os horários formatados
+            return new HourMarker(horarioEntrada, horarioSaida);
+        } else {
+            // Lida com o formato inválido, se necessário
+            System.err.println("Formato inválido para criar HourMarker: " + horarioFormatado);
+            return null;
+        }
+        
     }
 			 
 
