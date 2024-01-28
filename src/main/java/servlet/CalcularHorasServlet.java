@@ -338,7 +338,6 @@ public class CalcularHorasServlet extends HttpServlet {
 
 	
 	
-
     public static List<String> converterHorarios(String[] horarios) {
         List<String> horariosFormatados = new ArrayList<>();
 
@@ -349,45 +348,33 @@ public class CalcularHorasServlet extends HttpServlet {
             // Remove as aspas duplas
             horario = horario.replaceAll("\"", "");
 
-            String[] partes = horario.split("-");
-
-            if (partes.length == 2) {
-                String horarioEntrada = partes[0];
-                String horarioSaida = partes[1];
-
-                // Remove os colchetes dos horários de entrada e saída
-                horarioEntrada = horarioEntrada.replaceAll("\\[|\\]", "");
-                horarioSaida = horarioSaida.replaceAll("\\[|\\]", "");
-
-                // Adiciona ao resultado formatado
-                horariosFormatados.add(horarioEntrada + "," + horarioSaida);
-            } else {
-                // Se a string não estiver no formato esperado, pode lidar com isso de acordo com suas necessidades
-                System.err.println("Formato inválido: " + horario);
+            String[] horariosSeparados = horario.split(",");
+            for (String horarioSeparado : horariosSeparados) {
+                // Remove espaços em branco antes e depois do horário e adiciona ao resultado formatado
+                horariosFormatados.add(horarioSeparado.trim());
             }
-            
         }
         return horariosFormatados;
     }
 
+
 			    
-			    // Método para criar instância de WorkSchedule a partir de um horário formatado
-			    private static WorkSchedule criarWorkSchedule(String horarioFormatado) {
-			        String[] partes = horarioFormatado.split(",");
+    // Método para criar instância de WorkSchedule a partir de um horário formatado
+    private static WorkSchedule criarWorkSchedule(String horarioFormatado) {
+        String[] partes = horarioFormatado.split("-");
 
-			        if (partes.length == 2) {
-			            String horarioEntrada = partes[0];
-			            String horarioSaida = partes[1];
+        if (partes.length == 2) {
+            String horarioEntrada = partes[0];
+            String horarioSaida = partes[1];
 
-			            // Cria e retorna uma instância de WorkSchedule com os horários formatados
-			            return new WorkSchedule(horarioEntrada, horarioSaida);
-			        } else {
-			            // Lida com o formato inválido, se necessário
-			            System.err.println("Formato inválido para criar WorkSchedule: " + horarioFormatado);
-			            return null;
-			        }
-			    }
-			   
+            // Cria e retorna uma instância de WorkSchedule com os horários formatados
+            return new WorkSchedule(horarioEntrada, horarioSaida);
+        } else {
+            // Lida com o formato inválido, se necessário
+            System.err.println("Formato inválido para criar WorkSchedule: " + horarioFormatado);
+            return null;
+        }
+    }
 			 
 
 			//Exemplo 1
