@@ -27,7 +27,9 @@
         </button>
     </nav>
  <div class ="container">
-    
+    <div id="erroCalc" class="alert alert-danger" style="display:none; margin-top: 10px;">
+            <strong>Erro!</strong> O Erro ao calcular atrasos e horas extras.
+    </div>
     <div class="tabela-horario">
 
         <form id="userForm1" class="form-group">
@@ -361,9 +363,10 @@ function calcularAtrasoHorasExtras() {
     // Verificar se as tabelas estão definidas
     if (Tabela1 && Tabela2) {
         // Construir objeto com os dados das tabelas
-              // Construir arrays com os dados das tabelas
+        // Construir arrays com os dados das tabelas
         let tabelaHorario = Tabela1.map(objeto => `${objeto.entrada}-${objeto.saida}`);
         let tabelaMarcacoes = Tabela2.map(objeto => `${objeto.entrada}-${objeto.saida}`);
+      //  
 
     $.ajax({
     type: "POST",
@@ -372,12 +375,12 @@ function calcularAtrasoHorasExtras() {
         tabelaHorario: JSON.stringify(tabelaHorario),
         tabelaMarcacoes: JSON.stringify(tabelaMarcacoes)
     },
+    
+    
     success: function(data) {
-    	
+         
     	if(data){
-    				
-    		//Tabela2 = [];
-    		
+    			
             resultadoAtrasos = data.atrasos;      
           // Exibir os resultados nas tabelas
             tabelaAtraso(resultadoAtrasos);
@@ -391,7 +394,9 @@ function calcularAtrasoHorasExtras() {
     	}
     },
     error: function() {
-        alert('Erro ao calcular atrasos e horas extras.');
+    	
+    	 $("#erroCalc").show();
+      //  alert('Erro ao calcular atrasos e horas extras.');
     }
 });
 

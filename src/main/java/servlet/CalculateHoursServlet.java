@@ -212,7 +212,7 @@ public class CalculateHoursServlet extends HttpServlet {
 				                String formattedEntryMinute = String.format("%02d", markerEntryMinute);
 
 				             
-				                horaAtraso = schedule.getEntryHour() + " " + formattedEntryHour + ":" + formattedEntryMinute;		                
+				                horaAtraso += schedule.getEntryHour() + " " + formattedEntryHour + ":" + formattedEntryMinute;		                
 				                atrasos.add(horaAtraso);
 
 				                System.out.println("Você se atrasou! " + horaAtraso);
@@ -291,7 +291,7 @@ public class CalculateHoursServlet extends HttpServlet {
 								
 							    String formattedEntryHour = String.format("%02d", markerEntryHour);
 							    String formattedEntryMinute = String.format("%02d", markerEntryMinute);
-								horaAtraso =  schedule.getEntryHour() + " " + formattedEntryHour + ":"+ formattedEntryMinute;  
+								horaAtraso +=  schedule.getEntryHour() + " " + formattedEntryHour + ":"+ formattedEntryMinute;  
 								atrasos.add(horaAtraso);
 								System.out.println("Entrou atrasado: " + horaAtraso);
 								break; // break de teste
@@ -307,7 +307,7 @@ public class CalculateHoursServlet extends HttpServlet {
 							
 							String formattedDepartureMinuter= String.format("%02d", markerDepartureMinute);
 							
-							horaAtraso =  hour + ":" + formattedDepartureMinuter + " " + schedule.getDepartureTime();
+							horaAtraso +=  hour + ":" + formattedDepartureMinuter + " " + schedule.getDepartureTime();
 							atrasos.add(horaAtraso);
 							System.out.println("Saiu mais cedo: " + horaAtraso);
 						}
@@ -321,7 +321,7 @@ public class CalculateHoursServlet extends HttpServlet {
 							 * Pega o início da hora extra
 							 */
 							horaExtraAposDetectado = true;
-							horaExtra = schedule.getDepartureTime();
+							horaExtra += schedule.getDepartureTime();
 						} else {
 							/**
 							 * Fica atualizando até achar o final da hora extra
