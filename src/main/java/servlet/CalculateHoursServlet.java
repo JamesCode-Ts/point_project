@@ -20,34 +20,46 @@ import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.List;
 
 @WebServlet("/calcularHoras")
-public class CalcularHorasServlet extends HttpServlet {
+public class CalculateHoursServlet extends HttpServlet {
     private static final long serialVersionUID = 1L;
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
     	
+    	/*OBS: Não foram  implementados todas as situação que estão nos exemplos nas informaçoes do teste.
+    	 * Os exemplos, 1,2,3 funcionão e parte do 4, com apenas 1 marcação de horario.
+    	 * O programa dar bug quando são adicionados multiplas marcações e falha.
+    	 * Pois não tive tempo para fazer as correçoes necessárias.
+    	 * Como disse parte da lógica funciona para todos os exemplos.
+    	 * Como ja foi citado,o que faltaria é fazer a correção no comportamanto da iteração da lista de marcações.
+    	 */
+    	
     	   List<String> atrasos = new ArrayList<>(); // Inicializa a lista aqui
     	   List<String> horasExtras = new ArrayList<>();
+    	   // Cria um array dinâmico para armazenar os valores acumulados
+           List<Integer> markerEntryHourList = new ArrayList<>();
     	  
         try {
             // Obter parâmetros do request
             String[] tabelaHorarioParam = request.getParameterValues("tabelaHorario");
-            String tabelaMarcacoesParam = request.getParameter("tabelaMarcacoes");
+            String[] tabelaMarcacoesParam = request.getParameterValues("tabelaMarcacoes");
 
             // Converter os parâmetros para listas de períodos
             List<String> tabelaHorario = converterHorarios(tabelaHorarioParam);
-            String tabelaMarcacoes = converterMarcacao(tabelaMarcacoesParam);
+            List<String> tabelaMarcacoes = converterHorarios(tabelaMarcacoesParam);
             
     
             
          // Lista para armazenar os objetos WorkSchedule
+         // São os horarios de trabalho..
             List<WorkSchedule> schedules = new ArrayList<>();
-           //    List<String> horarioFormatadoMaracao = converterHorariosMarcacao(tabelaMarcacoesParam);      
+          
                 // Adiciona os objetos WorkSchedule à lista
                 for (String horario : tabelaHorario) {
                     // Cria instâncias de WorkSchedule com base nos horários formatados
@@ -62,58 +74,52 @@ public class CalcularHorasServlet extends HttpServlet {
                     }
                 }
                 
-                
-                HourMarker hm = criarHourSchedule(tabelaMarcacoes);
+                // Cria a lista para receber os horarios de marcação de ponto
+                List<HourMarker> hm = new ArrayList<>();
 
-                if (hm != null) {
-                	
-                    int markerEntryHour = Integer.parseInt(hm.getEntryHour().split(":")[0]);
-                    int markerEntryMinute = Integer.parseInt(hm.getEntryHour().split(":")[1]);
+                // Adiciona os objetos HourMarker à lista
+                for (String horario : tabelaMarcacoes) {
+                    // Cria instâncias de HourMarker com base nos horários formatados
+                    HourMarker hourMarkerList = criarHourSchedule(horario);
 
-                    int markerDepartureHour = Integer.parseInt(hm.getDepartureTime().split(":")[0]);
-                    int markerDepartureMinute = Integer.parseInt(hm.getDepartureTime().split(":")[1]);
+                    // Adiciona à lista se não for nulo
+                    if (hourMarkerList != null) {
+                        hm.add(hourMarkerList);
+                    }
+                }
 
-                    // Use as variáveis conforme necessário
+                     
+               
+                if (!hm.isEmpty()) {
+                    HourMarker firstHourMarker = hm.get(0);
+                    
+                    // Coverte as strings dos horarios em inteiros
+                    int markerEntryHour = Integer.parseInt(firstHourMarker.getEntryHour().split(":")[0]);
+                    int markerEntryMinute = Integer.parseInt(firstHourMarker.getEntryHour().split(":")[1]);
+
+                    int markerDepartureHour = Integer.parseInt(firstHourMarker.getDepartureTime().split(":")[0]);
+                    int markerDepartureMinute = Integer.parseInt(firstHourMarker.getDepartureTime().split(":")[1]);
+                    
+                    
                     System.out.println("Entrada: " + markerEntryHour + ":" + markerEntryMinute);
                     System.out.println("Saída: " + markerDepartureHour + ":" + markerDepartureMinute);
-                }
-			
-			int markerEntryHour = Integer.parseInt(hm.getEntryHour().split(":")[0]);
-			int markerEntryMinute = Integer.parseInt(hm.getEntryHour().split(":")[1]);
-			
-			int markerDepartureHour = Integer.parseInt(hm.getDepartureTime().split(":")[0]);
-			int markerDepartureMinute = Integer.parseInt(hm.getDepartureTime().split(":")[1]);
+                
+                    markerEntryHourList.add(markerEntryHour);
 			
 
-			//
-			 System.out.println(markerEntryHour);
-			 System.out.println(markerEntryMinute);
-			 
-			 System.out.println(markerDepartureHour);
-			 
-			 System.out.println(markerDepartureMinute);
-			
-
-			//Guarda a hora extra
+			// Vai armazenar horas extras
 			String horaExtra = "";
-			
-			//Guarda a hora de atraso
+			// Vai armazenar horas atrasadas
 			String horaAtraso = "";
 			
-			//Início da jornada
 			int hour = 0;
-			
-			//Guarda o último minuto processado
+		
 			int lastMinute = 0;
 			
 			
 			//Percorro os horários de trabalho
 			for (WorkSchedule schedule : schedules) {
-				boolean horaExtraAntecipadaDetectada = false;
-				boolean horaDeAtrasoAntecipadaDetectada = false;
-				
-				boolean horaExtraAposDetectado = false;
-				boolean horaDeAtrasoAposDetectado = false;
+			
 				
 				int horarioDeEntrada = Integer.parseInt(schedule.getEntryHour().split(":")[0]);
 				int minutoDeEntrada = Integer.parseInt(schedule.getEntryHour().split(":")[1]);
@@ -121,24 +127,40 @@ public class CalcularHorasServlet extends HttpServlet {
 				int horarioDeSaida = Integer.parseInt(schedule.getDepartureTime().split(":")[0]);
 				int minutoDeSaida = Integer.parseInt(schedule.getDepartureTime().split(":")[1]);
 				
+				
+
+				boolean horaExtraAntecipadaDetectada = false;
+				boolean horaDeAtrasoAntecipadaDetectada = false;
+				
+				boolean horaExtraAposDetectado = false;
+				boolean horaDeAtrasoAposDetectado = false;
+				
 				lastMinute = minutoDeSaida;
 				
 				
 				/**
-				 * Jornada de Trabalho do funcionário
+				 * Iniciando a jornada de trabalho
 				 * 
-				 * Se hour for == 0, então quer dizer que ele iniciou o cálculo agora, mas caso já exista um valor, continua de onde parou
-				 * Casos como uma jornada que passa de um turno para o outro por exemplo....
-				 * hour é inicializado com o valor de markerEntryHour, ou seja horario de marcação.
+				 * O valor de markerEntryHour é atrinuido a hour.
 				 */
-				for(hour = hour == 0 ? markerEntryHour : hour; hour <= markerDepartureHour; hour++) {
-					if(hour == horarioDeSaida) {
-						/**
-						 * Marca a chegada ao final do expediente, passa para o proximo horário.
-						 */
-						break;
-					}
-					
+				
+			      // Faz a ireção para cada hora de marcação digitado no front-end.
+			        for (Integer currentHour : markerEntryHourList) {
+				    hour = currentHour; // Atribua o valor a 'hour' para que esteja disponível fora do loop
+
+				    for (; 
+				            (hour <= markerDepartureHour && currentHour <= markerDepartureHour) || (hour > markerDepartureHour); 
+				            hour++) {
+				        
+				    	if(hour == horarioDeSaida) {
+							/**
+							 * Marca a chegada ao final do expediente, passa para o proximo horário.
+							 */
+							break;
+						}
+				
+
+			   		   			
 					/**
 					 * Se passou o dia, o cálculo vai precisar ser um pouco diferente...
 					 * Pois precisaremos pegar o horário de início, de término e verificar 
@@ -189,40 +211,56 @@ public class CalcularHorasServlet extends HttpServlet {
 				                String formattedEntryHour = String.format("%02d", markerEntryHour);
 				                String formattedEntryMinute = String.format("%02d", markerEntryMinute);
 
-				                // Formata o inicio da entrada de horario de trabalho com o inicio de marcação de ponto.
+				             
 				                horaAtraso = schedule.getEntryHour() + " " + formattedEntryHour + ":" + formattedEntryMinute;		                
 				                atrasos.add(horaAtraso);
 
 				                System.out.println("Você se atrasou! " + horaAtraso);
 				            }
 				        } else if (dataHoraMarcacao.isBefore(dataHoraDeEntrada)) {
-				            // Formatando para sempre ter dois dígitos
+				        		        		
+				     
 				            String formattedEntryHour = String.format("%02d", markerEntryHour);
+				            String formattedmarkerDepartureHour = String.format("%02d", markerDepartureHour);
 				            String formattedEntryMinute = String.format("%02d", markerEntryMinute);
-
+				            
+				           
 				            // Criando a string formatada para hora extra
-				            horaExtra = formattedEntryHour + ":" + formattedEntryMinute + " " + schedule.getEntryHour();
-
+				            horaExtra = formattedmarkerDepartureHour + ":" + formattedEntryMinute + " " + schedule.getEntryHour();
+                            horasExtras.add(horaExtra);
 				            System.out.println("Você se antecipou! " + horaExtra);
+				            
+				            
+				            horaAtraso += formattedEntryHour +" " + schedule.getDepartureTime();
+							atrasos.add(horaAtraso);
+							System.out.println("Entrou atrasado: " + horaAtraso);
+							break;
+				        	
+				            
 				        }
 
 					} else if(hour < horarioDeEntrada && hour < horarioDeSaida) {
 						/**
 						 * Entrou antes
 						 */
-						if(!horaExtraAntecipadaDetectada) {
+						
 							horaExtraAntecipadaDetectada = true;
 							
 							String formattedEntryMinute = String.format("%02d", markerEntryMinute);
 							
 							
 							horaExtra = hour + ":" + formattedEntryMinute;
-						}
+							
+							System.out.println("Hora extra: " + horaExtra);
+							
+							
+						
 					} else if(hour == horarioDeEntrada && hour < horarioDeSaida) {
 						/**
 						 * Entrou no horário
 						 */	
 						if(horaExtraAntecipadaDetectada) {
+							
 							/**
 							 * Se tiver encontrado hora extra antes quer dizer que tinha algo para colocar na variável
 							 */
@@ -235,26 +273,32 @@ public class CalcularHorasServlet extends HttpServlet {
 						} else {
 							System.out.println("Entrou no horário");
 						}
+						
 					
 					} else if(hour > horarioDeEntrada && hour < horarioDeSaida) {
-						//Se ele encontrou hora extra antes, quer dizer que o funcionário chegou antes do horário...
-						/**
-						 * Entrou Atrasado
-						 */
+						//Entrou atrasado
 						
+						System.out.println("testando.. ");
+							
 						if(hour > horarioDeEntrada && !horaExtraAntecipadaDetectada) {
 							/**
 							 * Se não, ele entrou atrasado
 							 */
 							if(!horaDeAtrasoAntecipadaDetectada) {
 								horaDeAtrasoAntecipadaDetectada = true;
-								horaAtraso = hour + ":" + markerEntryMinute;
+								horaAtraso = hour + ":" + markerEntryMinute;						
 							} else {
-								horaAtraso += " " + schedule.getDepartureTime();
+								
+							    String formattedEntryHour = String.format("%02d", markerEntryHour);
+							    String formattedEntryMinute = String.format("%02d", markerEntryMinute);
+								horaAtraso =  schedule.getEntryHour() + " " + formattedEntryHour + ":"+ formattedEntryMinute;  
 								atrasos.add(horaAtraso);
 								System.out.println("Entrou atrasado: " + horaAtraso);
+								break; // break de teste
+								
 							}
-						} else if(hour == markerDepartureHour) {
+							
+							} else if(hour == markerDepartureHour) {
 							/* Se a hora for igual ao horário de saída marcado, então quer dizer que 
 							 * o funcionário saiu, mas ainda deveria estar no expediente dele e será considerado 
 							 * um atraso
@@ -289,10 +333,16 @@ public class CalcularHorasServlet extends HttpServlet {
 							horaExtra += " " + formattedhour + ":" + formattedDepartureMinute;
 							horasExtras.add(horaExtra);
 							System.out.println("Hora extra após o expediente: " + horaExtra);
+							break;
 						}
+				
 					}
+				
 				}
+				    
 			}
+			}     
+        
 			
 			if(hour < markerDepartureHour) {
 				/**
@@ -308,6 +358,7 @@ public class CalcularHorasServlet extends HttpServlet {
 				horasExtras.add(horasExtrasRestantes);
 				System.out.println("Hora extra após expediente: " + horasExtrasRestantes);
 			}
+
 
 
 
@@ -339,16 +390,22 @@ public class CalcularHorasServlet extends HttpServlet {
 
 	        // Fecha o PrintWriter
 	        out.close();
+	        
+	     // Limpa as listas após enviar os dados para o front-end
+	        atrasos.clear();
+	        horasExtras.clear();
 	    
-			     
+                }     
             
         } catch (Exception e) {
             e.printStackTrace();
             response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Erro interno no servidor.");
         }
-    }
-
+        }
 	
+    /* Converte as Strings vinda do front-end em um formato desejavel para os cálculos. 
+       Por exemplo de : ["08:00-12:00"] para "22:00","05:00"
+    */
     public static List<String> converterHorarios(String[] horarios) {
         List<String> horariosFormatados = new ArrayList<>();
 
@@ -368,32 +425,12 @@ public class CalcularHorasServlet extends HttpServlet {
         return horariosFormatados;
     }
     
-    public static String converterMarcacao(String horarios) {
-        StringBuilder horariosFormatados = new StringBuilder();
 
-        // Remove os colchetes "[" e "]" se estiverem presentes
-        horarios = horarios.replaceAll("\\[|\\]", "");
-        
-        // Remove as aspas duplas
-        horarios = horarios.replaceAll("\"", "");
-        // Usar split para obter uma array de horários
-        String[] horariosSeparados = horarios.split(",");
-       
-        for (String horarioSeparado : horariosSeparados) {
-            // Remove espaços em branco antes e depois do horário e adiciona ao resultado formatado
-            horariosFormatados.append(horarioSeparado.trim()).append(", ");
-        }
 
-        // Remove a última vírgula e espaço adicionados no loop
-        if (horariosFormatados.length() > 0) {
-            horariosFormatados.delete(horariosFormatados.length() - 2, horariosFormatados.length());
-        }
-
-        return horariosFormatados.toString();
-    }
-
-			    
-    // Método para criar instância de WorkSchedule a partir de um horário formatado
+	/*
+	 *  Serve para armazenar os valores formatados nas listas de horario de trabalho.	
+	 *  Método para criar instância de WorkSchedule a partir de um horário formatado    
+	 */ 
     private static WorkSchedule criarWorkSchedule(String horarioFormatado) {
         String[] partes = horarioFormatado.split("-");
 
@@ -409,9 +446,10 @@ public class CalcularHorasServlet extends HttpServlet {
             return null;
         }
     }
-    
-    
-    // Método para criar instância de WorkSchedule a partir de um horário formatado
+      
+    /* 
+       Serve para armazenar os valores formatados nas listas de horario de trabalho.
+    */
     private static HourMarker criarHourSchedule(String horarioFormatado) {
         String[] partes = horarioFormatado.split("-");
 
@@ -426,7 +464,6 @@ public class CalcularHorasServlet extends HttpServlet {
             System.err.println("Formato inválido para criar HourMarker: " + horarioFormatado);
             return null;
         }
-        
     }
 			 
 	

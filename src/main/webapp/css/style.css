@@ -1,16 +1,15 @@
 
-
 html, body {
   height: 100%;
   margin: 0;
-  overflow-y: scroll; /* Adiciona rolagem vertical à página */ /* Permitir a rolagem da página */
+  overflow-y: scroll;
+  margin-bottom: 60px; 
 }
 
 .tabela-horario {
  
     flex-direction: column;
     align-items: center;
-    width: auto;
     margin-top: 50px;
     box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px;
 }
@@ -18,7 +17,11 @@ html, body {
 
   .form-group {
     margin-bottom: 10px;
+     
+    
+   
    }
+ 
    
    .form-label{
    
@@ -28,8 +31,8 @@ html, body {
    
    .row{
    
-   width:700px; 
    margin-bottom: 40px;
+   width: 900px;
  
    
    
@@ -38,18 +41,14 @@ html, body {
      margin-left: 10px;
    
    }
-   
-   
-   
+    
    .container-atraso{
    margin-top: 40px;
    
    }
    
-   
 
 .tabela-marcacao{
-	
    
     flex-direction: column;
     align-items: center;
@@ -57,11 +56,6 @@ html, body {
     margin-top: 50px;
     box-shadow: rgba(0, 0, 0, 0.02) 0px 1px 3px 0px, rgba(27, 31, 35, 0.15) 0px 0px 0px 1px;
     
-}
-
-.container{
-	
-	width: 800px;
 }
 
 
@@ -75,12 +69,16 @@ html, body {
     width: auto;
     margin-top: 50px;
     box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
-    
-	
 	
 }
 
-*/
+.container{
+	
+	
+	
+
+}
+
 .table-HoraExtra{
 	
     display: flex;
@@ -92,8 +90,20 @@ html, body {
 	
 }
 
-*/
 
+footer{
+	
+	height: 60px;
+    color: #c0c0c0;
+    position: absolute;
+    bottom: 0;
+    width: 100%; /* Garante que o rodapé ocupe toda a largura da página */
+    padding: 10px;
+    background-color: #333; /* Adicionei um fundo de cor escura para melhor visualização */
+    text-align: center; /* Centraliza o conteúdo do rodapé */
+    
+	
+}
 .table{
 	margin-top: 40px;
 	
