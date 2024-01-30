@@ -33,7 +33,7 @@ public class CalculateHoursServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
     	
     	/*OBS: Não foram  implementados todas as situação que estão nos exemplos nas informaçoes do teste.
-    	 * Os exemplos, 1,2,3 funcionão e parte do 4, com apenas 1 marcação de horario.
+    	 * Os exemplos, 1,2,3 funcionam e parte do 4, com apenas 1 marcação de horario.
     	 * O programa dar bug quando são adicionados multiplas marcações e falha.
     	 * Pois não tive tempo para fazer as correçoes necessárias.
     	 * Como disse parte da lógica funciona para todos os exemplos.
