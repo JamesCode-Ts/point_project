@@ -29,6 +29,10 @@ JQuery
 
 BootStrap
 
+Tomcat 10.1.18
+
+JDK 17
+
 Arquitetura MVC
 
 
