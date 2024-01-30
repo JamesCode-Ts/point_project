@@ -1,7 +1,7 @@
 # Horas Trabalhadas
 
 O Sistema Web feito tem as funções de calcular os períodos de horas de atrasos e extras de seus funcionários.
-E mostra-loss nas tabelas de Horario de trabalho os horários e Horario de Marcação.
+E mostra-los nas tabelas de Horario de trabalho os horários e Horario de Marcação.
 
 OBS: Não foram  implementados todas as situação que estão nos exemplos nas informaçoes do teste.
     	  Os exemplos, 1,2,3 funcionam e parte do 4, com apenas 1 marcação de horario.
