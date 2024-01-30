@@ -1,6 +1,6 @@
 # Horas Trabalhadas
 
-O Sistema Web feito tem a funções de calcular os períodos de horas de atrasos e extras de seus funcionários.
+O Sistema Web feito tem as funções de calcular os períodos de horas de atrasos e extras de seus funcionários.
 E mostra-loss nas tabelas de Horario de trabalho os horários e Horario de Marcação.
 
 OBS: Não foram  implementados todas as situação que estão nos exemplos nas informaçoes do teste.
