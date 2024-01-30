@@ -19,11 +19,11 @@ OBS: Não foram  implementados todas as situação que estão nos exemplos nas i
 
 Tecnologias Utilizadas:
 
-Java
-JavaScript
-Servlets
-JQuery
-BootStrap
+*Java
+*JavaScript
+*Servlets
+*JQuery
+*BootStrap
 
 
 
