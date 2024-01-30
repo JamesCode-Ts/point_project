@@ -120,7 +120,10 @@ public class CalculateHoursServlet extends HttpServlet {
 			//Percorro os horários de trabalho
 			for (WorkSchedule schedule : schedules) {
 			
-				
+				/* Convertendo de string para inteiro e isolando as horas de minitos.
+                                   Utilizaremos as horas isoladamente para fazer os calculos.
+                                */
+    
 				int horarioDeEntrada = Integer.parseInt(schedule.getEntryHour().split(":")[0]);
 				int minutoDeEntrada = Integer.parseInt(schedule.getEntryHour().split(":")[1]);
 				
@@ -162,11 +165,12 @@ public class CalculateHoursServlet extends HttpServlet {
 
 			   		   			
 					/**
-					 * Se passou o dia, o cálculo vai precisar ser um pouco diferente...
-					 * Pois precisaremos pegar o horário de início, de término e verificar 
-					 * quanto o funcionário se atrasou
+					 * Quando passa da meia noite os calculos vão ser o seguinte..
+					 * Pois precisaremos pegar o horario de inicio e fim pra verificar
+					 * quanto o funcionário se atrasou ou teve hora extra.
 					 * 
-					 * Se for maior, quer dizer que passou de um dia para o outro
+					 * Se horario de trabalho entrada for maior do que o de saida, 
+                                            vamos dizer que passou de um dia para outro.
 					 * Ex: 22:00 05:00 | 19:00 01:00 | 18:00 02:00
 					 */
 					if(horarioDeEntrada > horarioDeSaida) {
