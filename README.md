@@ -27,6 +27,10 @@ Servlets
 
 JQuery
 
+HTML
+
+CSS
+
 BootStrap
 
 Tomcat 10.1.18
